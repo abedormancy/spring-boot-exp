@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ga.uuid.entity.User;
@@ -65,5 +67,12 @@ public class TestJPA {
 		assertEquals(lastName, "稳住_3");
 		User user = us.dao().findByQueryId(3);
 		assertEquals(user.getId().intValue(), 3);
+	}
+	
+	@Test
+	public void pageTest() {
+		System.out.println("------------------");
+		us.dao().findByName("%abe%", PageRequest.of(2, 5, Direction.DESC, "id")).forEach(System.out::println);
+		System.out.println("------------------");
 	}
 }

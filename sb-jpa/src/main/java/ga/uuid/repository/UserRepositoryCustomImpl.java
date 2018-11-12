@@ -23,5 +23,4 @@ public class UserRepositoryCustomImpl  implements UserRepositoryCustom {
 		query.setParameter(0, 1);
 		return query.getResultList();
 	}
-
 }

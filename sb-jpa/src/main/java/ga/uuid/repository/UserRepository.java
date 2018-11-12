@@ -3,6 +3,7 @@ package ga.uuid.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -27,5 +28,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	User findByQueryId(Integer id);
 	
 	@Query(value = "select last_name from customers_5 where first_name like ?1", nativeQuery = true)
-	String findLastNameNativeByfirstName(String firstName);	
+	String findLastNameNativeByfirstName(String firstName);
+	
+	@Query("from User where firstName like ?1 or lastName like ?1")
+	List<User> findByName(String name, Pageable pageable);
 }
