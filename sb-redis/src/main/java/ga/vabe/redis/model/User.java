@@ -1,6 +1,5 @@
 package ga.vabe.redis.model;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

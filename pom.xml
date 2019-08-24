@@ -16,6 +16,7 @@
     <modules>
         <module>sb-redis</module>
         <module>common</module>
+        <module>sb-beetl</module>
     </modules>
 
     <properties>

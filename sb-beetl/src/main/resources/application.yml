@@ -1,0 +1,15 @@
+beetl:
+  suffix: html
+  enabled: true
+#
+#beetlsql:
+#  sqlPath: /sql
+#  basePackage: ga.vabe.beetl.dao
+#  daoSuffix: dao
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.11:3306/beetl?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
