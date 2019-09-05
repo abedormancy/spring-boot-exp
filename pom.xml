@@ -17,6 +17,7 @@
         <module>sb-redis</module>
         <module>common</module>
         <module>sb-beetl</module>
+        <module>sb-kafka</module>
     </modules>
 
     <properties>

@@ -1,0 +1,40 @@
+spring:
+  kafka:
+    bootstrap-servers: 192.168.1.15:9092
+    consumer:
+      groupId: abe-executor
+      enable-auto-commit: true
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      valueDserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      groupId: abe-executor
+      keyDeserializer: org.apache.kafka.common.serialization.StringSerializer
+      valueDserializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 16384
+      buffer-memory: 33554432
+#    listener:
+#      concurrency: 3
+
+#kafka:
+#  consumer:
+#    zookeeper:
+#      connect: 192.168.1.15:2181
+#    servers: 192.168.1.15:9092
+#    enable:
+#      auto:
+#        commit: true
+#    session:
+#      timeout: 6000
+#    auto:
+#      commit:
+#        interval: 100
+#      offset:
+#        reset: latest
+#    group:
+#      id: abe-executor
+#    concurrency: 10
+#    properties:
+#      max:
+#        partition:
+#          fetch:
+#            bytes: 4097152
