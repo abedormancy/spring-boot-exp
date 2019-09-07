@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: sb-jpa
+
+  datasource:
+    url: jdbc:mysql://iiid.ga:3306/test?useSSL=true
+    username: root
+    password: 123456
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+#    database-platform: org.hibernate.dialect.MySQL57Dialect
+server:
+  port: 8080
