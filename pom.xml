@@ -20,8 +20,6 @@
         <module>sb-kafka</module>
         <module>sb-jpa</module>
         <module>sb-mybatis</module>
-        <module>sb-activiti</module>
-        <module>sb-camunda</module>
         <module>sb-websocket</module>
     </modules>
 

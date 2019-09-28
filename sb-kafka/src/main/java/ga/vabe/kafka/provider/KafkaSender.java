@@ -3,18 +3,19 @@ package ga.vabe.kafka.provider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import javax.annotation.Resource;
+
 @Component
 @Slf4j
 public class KafkaSender<T> {
 
-    @Autowired
+    @Resource
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     private ObjectMapper mapper = new ObjectMapper();
