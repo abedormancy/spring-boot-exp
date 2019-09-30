@@ -21,6 +21,7 @@
         <module>sb-jpa</module>
         <module>sb-mybatis</module>
         <module>sb-websocket</module>
+        <module>sb-log</module>
     </modules>
 
     <properties>

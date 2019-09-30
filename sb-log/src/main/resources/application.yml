@@ -1,0 +1,21 @@
+# SpringBoot 默认日志等级是 >= INFO
+
+
+# 该配置只对嵌入式容器、Spring、Hibernate 生效，我们自己的项目需要输出 DEBUG 需要额外配置 logging.level.<package> = <level>
+# 命令配置模式 --debug=true 优先级最高
+# 资源文件配置模式
+#debug: true
+
+#logging:
+#  level:
+#    root: debug
+
+# 定义输出到控制台的格式
+logging:
+  level:
+    org.spring.framework.web: error
+    ga.vabe.log.controller: debug
+  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  file: r:/test.log
