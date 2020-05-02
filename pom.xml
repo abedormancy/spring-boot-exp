@@ -15,7 +15,6 @@
     <version>1.0</version>
     <modules>
         <module>sb-redis</module>
-        <module>common</module>
         <module>sb-beetl</module>
         <module>sb-kafka</module>
         <module>sb-jpa</module>
@@ -45,5 +44,14 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
