@@ -17,12 +17,21 @@ public class TestController {
 
     private static int loop = 0;
 
+    private static int delay = 0;
+
     private static RateLimiter limiter = null;
 
-    @RequestMapping(value = "/loop/{count}", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String setLoop(@PathVariable int count) {
+    @RequestMapping(produces = MediaType.TEXT_PLAIN_VALUE)
+    public String index() {
+        return "loop: " + loop + ", delay: " + delay + ", moment: " + adder.intValue();
+    }
+
+
+    @RequestMapping(value = "/loop/{count}/{delay}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String setLoop(@PathVariable int count, @PathVariable int delay) {
         loop = count;
-        return "loop: " + loop;
+        TestController.delay = delay;
+        return "loop: " + loop + ", delay: " + delay;
     }
 
     @RequestMapping(value = "/limiter/{size}", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -42,7 +51,7 @@ public class TestController {
         long elapse = System.currentTimeMillis() - begin;
         String result = "moment: " + adder.intValue() + "\n" + "elapse: " + elapse + "\n" + "actual: " + elapse;
         adder.decrement();
-        return result;
+        return "ok";
     }
 
     /**
@@ -63,7 +72,7 @@ public class TestController {
 
         String result = "moment: " + moment + "\n" + "elapse: " + elapse + "\n" + "actual: " + actual;
         adder.decrement();
-        return result;
+        return "ok";
     }
 
     /**
@@ -81,7 +90,7 @@ public class TestController {
         long elapse = System.currentTimeMillis() - begin;
         String result = "moment: " + adder.intValue() + "\n" + "elapse: " + elapse + "\n" + "actual: " + elapse;
         adder.decrement();
-        return result;
+        return "ok";
     }
 
     private void delay(long millis) {
@@ -101,6 +110,9 @@ public class TestController {
         }
         long result = 0L;
         for (int i = 0; i < amount; i++) {
+            if (i % 10000 == 0) {
+                delay(delay);
+            }
             result += ThreadLocalRandom.current().nextInt(1, 100);
         }
         return result;
