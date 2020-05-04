@@ -14,25 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.LongAdder;
 
 @Slf4j
 @RestController
 @RequestMapping("/")
-public class IndexController {
+public class IndexController extends AppController {
 
     @Autowired
     private ITCbmTaskpoolService taskpoolService;
-
-    // 并发边界（多少并发时开启数据延迟批量插入和接口最小返回时间
-    int adderBound = 5;
-    LongAdder adder = new LongAdder();
-
-    // 最小返回时间（操作并发边界时起作用，用于降低接口响应速度控制压测时cpu占用
-    long returnMillis = 50;
-
-    // 轮询数据批量插入时间
-    long delayMillis = 200;
 
     // 集合容量
     int capacity = 256;
@@ -42,7 +31,11 @@ public class IndexController {
     {
         Thread batchInsertThread = new Thread(() -> {
             for(;;) {
-                sleep(delayMillis);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 // 双检查锁
                 if (!CollectionUtils.isEmpty(cacheList)) {
                     synchronized (cacheList) {
@@ -56,14 +49,14 @@ public class IndexController {
                             // 注意：如果批量插入操作多次非常耗时，会使得线程轮询变长从而导致 cacheList 越来越大（越来越大导致轮询时间越来越长，这是个恶性循环）
                             // 这时候可以通过线程池去处理批量保存（但根本解决方法是限流，因为服务器处理不了这么多数据）
                             taskpoolService.saveBatch(tempList);
-                            log.info("bath saves size: " + tempList.size());
+                            log.info("batch saves size: " + tempList.size());
                             tempList.clear();
                         }
                     }
                 }
             }
         });
-        batchInsertThread.setName("batch_insert_thread");
+        batchInsertThread.setName("batch-save-exec");
         batchInsertThread.setDaemon(true);
         batchInsertThread.start();
     }
@@ -71,13 +64,12 @@ public class IndexController {
     @RequestMapping(produces = MediaType.TEXT_PLAIN_VALUE)
     public String index() {
         long begin = System.currentTimeMillis();
-        long truth = save(instance("abe"));
+        save(instance("abe"));
+        long elapse = System.currentTimeMillis() - begin;
         return "集合容量: " + capacity + "\n" +
-                "当前并发:" + (adder.intValue() + 1) + "\n" +
-                "并发边界:" + adderBound + "\n" +
-                "批量插入线程轮询: " + delayMillis + "ms\n" +
-                "插入用时: " + truth + "ms\n" +
-                "当前返回用时: " + (System.currentTimeMillis() - begin) + "ms";
+                "当前并发:" + context.guest() + "\n" +
+                "并发边界:" + context.guestBound + "\n" +
+                "插入用时: " + elapse + "ms\n";
     }
 
     @RequestMapping(value = {"/add/{who}", "/add"})
@@ -101,44 +93,19 @@ public class IndexController {
         return pool;
     }
 
-    /**
-     * 返回接口真实用时，单位 ms
-     */
-    public long save(TCbmTaskpool tp) {
-        adder.increment();
-        long begin = System.currentTimeMillis();
-        if (adder.intValue() < adderBound) {
-            taskpoolService.save(tp);
-        } else {
+    public boolean save(TCbmTaskpool tp) {
+        if (context.overGuest()) {
             synchronized (cacheList) {
                 cacheList.add(tp);
             }
+        } else {
+            return taskpoolService.save(tp);
         }
-        long elapse = System.currentTimeMillis() - begin;
-        delay(elapse);
-        adder.decrement();
-        return elapse;
+        return true;
     }
 
     public String randomValue() {
         return String.valueOf(ThreadLocalRandom.current().nextLong(100000000L, 1000000000L));
     }
 
-    private final void delay(long millis) {
-        if (adder.intValue() < adderBound || millis > delayMillis) {
-            return;
-        }
-        sleep(returnMillis - millis);
-    }
-
-    private final void sleep(long millis) {
-        if (millis < 1) {
-            return;
-        }
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
