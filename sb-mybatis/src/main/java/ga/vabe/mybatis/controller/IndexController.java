@@ -1,16 +1,20 @@
 package ga.vabe.mybatis.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ga.vabe.common.IdGenerator;
 import ga.vabe.mybatis.entity.TCbmTaskpool;
 import ga.vabe.mybatis.service.ITCbmTaskpoolService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,6 +26,10 @@ public class IndexController extends AppController {
 
     @Autowired
     private ITCbmTaskpoolService taskpoolService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+    private static final String KEY_PRE = "CBM_TASK_POOL_LIST_";
 
     // 集合容量
     int capacity = 256;
@@ -70,6 +78,31 @@ public class IndexController extends AppController {
                 "当前并发:" + context.guest() + "\n" +
                 "并发边界:" + context.guestBound + "\n" +
                 "插入用时: " + elapse + "ms\n";
+    }
+
+    @RequestMapping(value = "page")
+    public String list() {
+        // 正常情况下这边会带有参数查询，但参数目前看来是固定的（即使不固定也没有关系，TTL时间设置短一点效果也很明显
+        String params = String.valueOf(ThreadLocalRandom.current().nextInt(1, 3));
+        String key = KEY_PRE + params;
+        Object object = redisTemplate.opsForValue().get(key);
+        if (object == null) {
+            synchronized (redisTemplate) {
+                object = redisTemplate.opsForValue().get(key);
+                if (object == null) {
+                    QueryWrapper<TCbmTaskpool> wrapper = new QueryWrapper<>();
+                    wrapper.lambda().eq(TCbmTaskpool::getFCreator, "ab").like(TCbmTaskpool::getFOrgRoute, "%"+params+"%");
+                    Page<TCbmTaskpool> page = taskpoolService.page(new Page<>(1, 15), wrapper);
+                    log.info("db: {}", page);
+                    redisTemplate.opsForValue().set(key, page, Duration.ofMillis(2000L));
+                } else {
+                    log.info("hold 住了并发，避免再次查db再set进redis");
+                }
+            }
+        } else {
+            log.info("redis: {}", object);
+        }
+        return "ok";
     }
 
     @RequestMapping(value = {"/add/{who}", "/add"})

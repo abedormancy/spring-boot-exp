@@ -18,7 +18,8 @@ public class SleepAspect {
     private AppContext context;
 
     @Pointcut("execution(* ga.vabe.mybatis.controller.AopController.index())" +
-            "|| execution(* ga.vabe.mybatis.controller.IndexController.add(..))")
+            "|| execution(* ga.vabe.mybatis.controller.IndexController.add(..))" +
+            "|| execution(* ga.vabe.mybatis.controller.IndexController.list())")
     public void pointCut() {
         // go away ~
     }

@@ -1,10 +1,9 @@
 package ga.vabe.mybatis.service.impl;
 
-import ga.vabe.mybatis.entity.Uu;
-import ga.vabe.mybatis.dao.UuMapper;
-import ga.vabe.mybatis.service.IUuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+import ga.vabe.mybatis.dao.UuMapper;
+import ga.vabe.mybatis.entity.Uu;
+import ga.vabe.mybatis.service.IUuService;
 
 /**
  * <p>
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author abe
  * @since 2020-03-06
  */
-@Service
+// @Service
 public class UuServiceImpl extends ServiceImpl<UuMapper, Uu> implements IUuService {
 
 }
