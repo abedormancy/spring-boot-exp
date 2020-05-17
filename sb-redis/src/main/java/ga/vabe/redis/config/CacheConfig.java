@@ -56,25 +56,26 @@ public class CacheConfig extends CachingConfigurerSupport {
 	 * @return
 	 */
 	@Bean
+	@Override
 	public CacheManager cacheManager() {
 		return new CacheWithTTLManager();
 	}
 
-//	/**
-//	 * redis cacheManager
-//	 * @param redisConnectionFactory
-//	 * @return
-//	 */
-//	@Bean
-//	public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-//		RedisCacheWriter writer = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
-//		// 自定义配置
-//		Map<String, RedisCacheConfiguration> configs = new HashMap<>();
-//		configs.put("60", generateRedisCacheConfiguration(60));
-//		configs.put("30", generateRedisCacheConfiguration(30));
-//		configs.put("5", generateRedisCacheConfiguration(5));
-//		return new RedisCacheManager(writer, generateRedisCacheConfiguration(3600), configs);
-//	}
+	/**
+	 * redis cacheManager
+	 * @param redisConnectionFactory
+	 * @return
+	 */
+	/*@Bean*/
+	public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+		RedisCacheWriter writer = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
+		// 自定义配置
+		Map<String, RedisCacheConfiguration> configs = new HashMap<>(3);
+		configs.put("60", generateRedisCacheConfiguration(60));
+		configs.put("30", generateRedisCacheConfiguration(30));
+		configs.put("5", generateRedisCacheConfiguration(5));
+		return new RedisCacheManager(writer, generateRedisCacheConfiguration(3600), configs);
+	}
 
 	/**
 	 * redis 中默认使用的是 java 序列化机制，对象如果不实现 Serializable 接口，无法序列化。<br>

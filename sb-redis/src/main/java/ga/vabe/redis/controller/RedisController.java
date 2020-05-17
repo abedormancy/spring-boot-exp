@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
 
+/**
+ * <b>description:</b><br/>
+ *  redis controller
+ * @author Abe
+ */
 @RestController
 public class RedisController {
 

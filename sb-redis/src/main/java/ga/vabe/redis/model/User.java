@@ -4,6 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * <b>description:</b><br/>
+ * user domain
+ * @author Abe
+ */
 @Data
 @ToString
 @NoArgsConstructor

@@ -5,6 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * <b>description:</b><br/>
+ * no desc
+ * @author Abe
+ */
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling

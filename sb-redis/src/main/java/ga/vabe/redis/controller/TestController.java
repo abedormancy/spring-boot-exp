@@ -9,11 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.LongAdder;
 
+/**
+ * <b>description:</b><br/>
+ * test controller
+ * @author Abe
+ */
 @RestController
 @RequestMapping("/test")
 public class TestController {
 
-    private static final LongAdder adder = new LongAdder();
+    private static final LongAdder GUEST_COUNT = new LongAdder();
 
     private static int loop = 0;
 
@@ -23,7 +28,7 @@ public class TestController {
 
     @RequestMapping(produces = MediaType.TEXT_PLAIN_VALUE)
     public String index() {
-        return "loop: " + loop + ", delay: " + delay + ", moment: " + adder.intValue();
+        return "loop: " + loop + ", delay: " + delay + ", moment: " + GUEST_COUNT.intValue();
     }
 
 
@@ -46,11 +51,11 @@ public class TestController {
     @RequestMapping(value = "/normal", produces = MediaType.TEXT_PLAIN_VALUE)
     public String normal() {
         long begin = System.currentTimeMillis();
-        adder.increment();
+        GUEST_COUNT.increment();
         loop(loop);
         long elapse = System.currentTimeMillis() - begin;
-        String result = "moment: " + adder.intValue() + "\n" + "elapse: " + elapse + "\n" + "actual: " + elapse;
-        adder.decrement();
+        String result = "moment: " + GUEST_COUNT.intValue() + "\n" + "elapse: " + elapse + "\n" + "actual: " + elapse;
+        GUEST_COUNT.decrement();
         return "ok";
     }
 
@@ -60,10 +65,10 @@ public class TestController {
     @RequestMapping(value = {"/sleep/{millis}", "/sleep"}, produces = MediaType.TEXT_PLAIN_VALUE)
     public String sleep(@PathVariable(required = false) Long millis) {
         long begin = System.currentTimeMillis();
-        adder.increment();
+        GUEST_COUNT.increment();
         loop(loop);
         long elapse = System.currentTimeMillis() - begin;
-        int moment = adder.intValue();
+        int moment = GUEST_COUNT.intValue();
         long actual = 0L;
         if (moment > 2 && millis != null) {
             actual = millis - elapse;
@@ -71,7 +76,7 @@ public class TestController {
         }
 
         String result = "moment: " + moment + "\n" + "elapse: " + elapse + "\n" + "actual: " + actual;
-        adder.decrement();
+        GUEST_COUNT.decrement();
         return "ok";
     }
 
@@ -84,12 +89,12 @@ public class TestController {
             return "please setting rate limiter size";
         }
         long begin = System.currentTimeMillis();
-        adder.increment();
+        GUEST_COUNT.increment();
         double acquire = limiter.acquire(1);
         loop(loop);
         long elapse = System.currentTimeMillis() - begin;
-        String result = "moment: " + adder.intValue() + "\n" + "elapse: " + elapse + "\n" + "actual: " + elapse;
-        adder.decrement();
+        String result = "moment: " + GUEST_COUNT.intValue() + "\n" + "elapse: " + elapse + "\n" + "actual: " + elapse;
+        GUEST_COUNT.decrement();
         return "ok";
     }
 

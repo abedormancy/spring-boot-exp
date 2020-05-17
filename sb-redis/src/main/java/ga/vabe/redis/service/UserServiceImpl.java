@@ -12,9 +12,24 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * <b>description:</b><br/>
+ * user service impl
+ * @author Abe
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+
+    {
+        log.info("初始化 UserServiceImpl...");
+        try {
+            Thread.sleep(10000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("初始化 UserServiceImpl 完毕");
+    }
 
     private IdGenerator idGen = IdGenerator.instance();
 
