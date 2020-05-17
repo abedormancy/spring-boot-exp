@@ -1,4 +1,4 @@
-package main.java.ga.vabe.common;
+package ga.vabe.common;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.LongAdder;

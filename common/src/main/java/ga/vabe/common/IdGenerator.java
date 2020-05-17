@@ -3,13 +3,15 @@ package ga.vabe.common;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * <b>description:</b><br/>
  * Lite SnowFlake
  * 0-  0000000000 0000000000 0000000000 0000000000 00 - 00000 - 0000000000000000
  * 可使用139年 , ( (1 << 42) / (3600 * 24 * 365 * 1000) ~= 139 )
  * 42 bit timestamp (存储的是timestamp的差值)
  * 12 bit sequence (每毫秒最多可生成 4,096个id)
  * 9 bit random ( 512 ) 用于提高 id 猜测难度
- * Created by Abe on 10/24/2018.
+ * @author Abe
+ * @date 0/24/2018
  */
 public class IdGenerator {
 
@@ -53,12 +55,21 @@ public class IdGenerator {
      */
     private long lastTimestamp = -1L;
 
-    private static final IdGenerator idGenerator = new IdGenerator();
+    private final static char[] DIGITS = {
+            '0', '1', '2', '3', '4', '5',
+            '6', '7', '8', '9', 'a', 'b',
+            'c', 'd', 'e', 'f', 'g', 'h',
+            'j', 'k', 'm', 'n', 'p', 'q',
+            'r', 's', 'u', 'u', 'v', 'w',
+            'x', 'y'
+    };
+
+    private static final IdGenerator ID_GENERATOR = new IdGenerator();
 
     private IdGenerator() {}
 
     public static final IdGenerator instance() {
-        return idGenerator;
+        return ID_GENERATOR;
     }
 
     synchronized public final long nextId() {
@@ -90,15 +101,6 @@ public class IdGenerator {
         return now;
     }
 
-    private final static char[] digits = {
-            '0', '1', '2', '3', '4', '5',
-            '6', '7', '8', '9', 'a', 'b',
-            'c', 'd', 'e', 'f', 'g', 'h',
-            'j', 'k', 'm', 'n', 'p', 'r',
-            's', 't', 'u', 'v', 'w', 'x',
-            'y', 'z'
-    };
-    
     public final String hexId() {
     	return toUnsignedString(nextId(), 4);
     }
@@ -108,16 +110,17 @@ public class IdGenerator {
         int charPos = 64;
         long mask = -1 ^ (-1 << shift);
         do {
-            buf[--charPos] = digits[(int) (i & mask)];
+            buf[--charPos] = DIGITS[(int) (i & mask)];
             i >>>= shift;
         } while (i != 0);
         return new String(buf, charPos, (64 - charPos));
     }
 
     public static void main(String[] args) {
+        IdGenerator idGenerator = instance();
         for (int i = 0; i < 8; i++) {
             long id = idGenerator.nextId();
-            System.out.println(id + " / " + toUnsignedString(id, 4));
+            System.out.println(id + " / " + toUnsignedString(id, 4) + " / " + toUnsignedString(id, 5));
         }
     }
 
