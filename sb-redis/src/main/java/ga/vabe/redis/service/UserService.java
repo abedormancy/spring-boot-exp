@@ -2,7 +2,7 @@ package ga.vabe.redis.service;
 
 import ga.vabe.redis.model.User;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,7 +16,7 @@ public interface UserService {
      * get all users
      * @return all users
      */
-    Collection<User> users();
+    List<User> users();
 
     /**
      * add user ( random

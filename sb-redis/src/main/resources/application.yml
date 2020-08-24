@@ -4,7 +4,7 @@ spring:
     database: 0
     host: 192.168.56.11
     port: 6379
-    password:
+    password: 1234Qwer#(
     jedis:
       pool:
         #最大连接数

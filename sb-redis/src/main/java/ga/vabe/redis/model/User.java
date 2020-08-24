@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * <b>description:</b><br/>
  * user domain
@@ -12,14 +14,18 @@ import lombok.ToString;
 @Data
 @ToString
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
 
-    public static final User EMPTY = new User();
+    private static final User EMPTY = new User();
 
     private String id;
 
     private String name;
 
     private Integer age;
+
+    public static User empty() {
+        return EMPTY;
+    }
 
 }

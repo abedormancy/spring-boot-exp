@@ -5,8 +5,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,14 +31,17 @@ public class CacheWithTTLManager extends ConcurrentMapCacheManager {
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 2, initialDelay = 1000 * 60 * 60 * 2)
     private void clear() {
         log.info("-------- 执行清除缓存任务 --------");
-        getCacheNames().stream().map(name -> (TTLCache) getCache(name)).forEach(TTLCache::clearOverdueCache);
+        getCacheNames().stream().map(name -> (TTLCache) getCache(name))
+                .filter(Objects::nonNull)
+                .forEach(TTLCache::clearOverdueCache);
     }
 
+    @Nonnull
     @Override
     protected Cache createConcurrentMapCache(String name) {
-        Cache cache = super.createConcurrentMapCache(name);
+        // Cache cache = super.createConcurrentMapCache(name);
         // 通过装饰器模式返回一个自定义的 Cache 对象
-        return new TTLCache(cache);
+        return new TTLCache(super.createConcurrentMapCache(name));
     }
 
     /**

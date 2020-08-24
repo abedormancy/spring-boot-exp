@@ -33,7 +33,7 @@ public class RedisController {
 
     @RequestMapping(value = "/user/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String user(@PathVariable("id") String id) {
-        return userService.user(id).orElse(User.EMPTY).toString();
+        return userService.user(id).orElseGet(User::empty).toString();
     }
 
     @RequestMapping(value = "/user/delete/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
