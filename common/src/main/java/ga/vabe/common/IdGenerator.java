@@ -68,7 +68,7 @@ public class IdGenerator {
 
     private IdGenerator() {}
 
-    public static final IdGenerator instance() {
+    public static IdGenerator instance() {
         return ID_GENERATOR;
     }
 
@@ -93,7 +93,7 @@ public class IdGenerator {
                 ThreadLocalRandom.current().nextLong(0L, 1L << RANDOM_BIT);
     }
 
-    private final long nextTime() {
+    private long nextTime() {
         long now = -1;
         while (now <= lastTimestamp) {
             now = System.currentTimeMillis();

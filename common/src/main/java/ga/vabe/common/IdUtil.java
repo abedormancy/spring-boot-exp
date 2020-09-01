@@ -102,15 +102,15 @@ public final class IdUtil {
 			// logger.warn("maximum id reached in 1 second in epoch: " + epochSecond);
 			return nextId(epochSecond + 1);
 		}
-		return generateId(epochSecond, next, SHARD_ID);
+		return generateId(epochSecond, next);
 	}
 
 	private static void reset() {
 		offset = 0L;
 	}
 
-	private static long generateId(long epochSecond, long next, long shardId) {
-		return ((epochSecond - OFFSET) << 21) | (next << 5) | shardId;
+	private static long generateId(long epochSecond, long next) {
+		return ((epochSecond - OFFSET) << 21) | (next << 5) | SHARD_ID;
 	}
 
 	private static long getServerIdAsLong() {
@@ -136,7 +136,6 @@ public final class IdUtil {
 			long id = nextId();
 			System.out.println(id + " / " + toUnsignedString(id, 4) + " / " + toUnsignedString(id, 5));
 		});
-
 	}
 
 
