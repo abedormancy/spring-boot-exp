@@ -13,7 +13,7 @@ public class SubtractOperation implements CalculateStrategy {
 
     @Override
     public String desc() {
-        return "相减";
+        return " - ";
     }
 
 }

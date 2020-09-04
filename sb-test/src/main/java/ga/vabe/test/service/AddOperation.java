@@ -14,7 +14,7 @@ public class AddOperation implements CalculateStrategy {
 
     @Override
     public String desc() {
-        return "相加";
+        return " + ";
     }
 
 }

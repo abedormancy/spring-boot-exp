@@ -13,7 +13,7 @@ public class MultiplyOperation implements CalculateStrategy {
 
     @Override
     public String desc() {
-        return "相乘";
+        return " * ";
     }
 
 }
