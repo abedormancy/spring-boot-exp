@@ -35,4 +35,12 @@
 
     </dependencies>
 
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>ali</id>-->
+<!--            <name>ali</name>-->
+<!--            <url>http://localhost:18081/repository/ali/</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
 </project>
