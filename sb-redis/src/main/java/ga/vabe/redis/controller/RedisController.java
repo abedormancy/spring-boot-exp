@@ -16,27 +16,28 @@ import java.util.stream.Collectors;
  * @author Abe
  */
 @RestController
+@RequestMapping("user")
 public class RedisController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/add", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String add() {
-        return userService.add().toString();
-    }
-
-    @RequestMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(produces = MediaType.TEXT_PLAIN_VALUE)
     public String index() {
         return userService.users().stream().map(User::toString).collect(Collectors.joining("\n"));
     }
 
-    @RequestMapping(value = "/user/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "add", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String add() {
+        return userService.add().toString();
+    }
+
+    @RequestMapping(value = "{id}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String user(@PathVariable("id") String id) {
         return userService.user(id).orElseGet(User::empty).toString();
     }
 
-    @RequestMapping(value = "/user/delete/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "delete/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String delete(@PathVariable("id") String id) {
         return String.valueOf(userService.delete(id));
     }
