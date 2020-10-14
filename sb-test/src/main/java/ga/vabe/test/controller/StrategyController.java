@@ -28,11 +28,6 @@ public class StrategyController {
         return "over.hell > " + otherPkgClass;
     }
 
-    @RequestMapping("/int")
-    public int index1() {
-        return 1;
-    }
-
     @RequestMapping(value = "/operation/{a}/{b}")
     public String strategySelect(@RequestParam("mode") int mode, @PathVariable int a, @PathVariable int b) {
         return String.valueOf(calculateOperationContext.get(mode)
