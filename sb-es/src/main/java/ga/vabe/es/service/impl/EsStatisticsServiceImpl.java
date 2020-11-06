@@ -122,7 +122,7 @@ public class EsStatisticsServiceImpl implements EsStatisticService {
                         .lockTime(Double.parseDouble(matcher.group(4)))
                         .rowsSent(Integer.parseInt(matcher.group(5)))
                         .rowsExamined(Integer.parseInt(matcher.group(6)))
-                        .sql(matcher.group(7).replace("\\n", "\r\n"))
+                        .sql(matcher.group(7).replace("\\n", "\r\n").replace("\\t", "\t"))
                         .build();
             } else {
                 log.warn("正则未匹配，忽略该数据: {}", json);

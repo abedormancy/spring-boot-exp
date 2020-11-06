@@ -24,7 +24,7 @@ public class Application implements CommandLineRunner {
 	@Value("${export_path:./}")
 	private String filepath;
 
-	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm");
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HH_mm");
 
 
 	public static void main(String[] args) {
