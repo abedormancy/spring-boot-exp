@@ -10,14 +10,14 @@ public class TimeUtil {
             if (Character.isDigit(c)) {
                 number.append(c);
             } else if (Character.isLetter(c) && (number.length() > 0)) {
-                result += convert(Integer.parseInt(number.toString()), c);
+                result += convert(Long.parseLong(number.toString()), c);
                 number = new StringBuilder();
             }
         }
         return result;
     }
 
-    private static long convert(int value, char unit) {
+    private static long convert(long value, char unit) {
         switch (unit) {
             case 'd':
                 return value * 1000 * 60 * 60 * 24;
@@ -28,7 +28,7 @@ public class TimeUtil {
             case 's':
                 return value * 1000;
         }
-        return 0;
+        return 0L;
     }
 
 }
