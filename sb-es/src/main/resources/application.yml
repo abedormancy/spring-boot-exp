@@ -1,0 +1,12 @@
+es:
+  enable: true
+  index:
+    name: '@mysql-27*'
+  username:
+  password:
+  timeout: 60
+  host: ubuntu.wsl
+  port: 9200
+  scheme: http
+
+export_path: r:/
