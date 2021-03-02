@@ -1,12 +1,11 @@
 es:
   enable: true
   index:
-    name: '@mysql-27*'
-  username:
-  password:
+    name: mysql-prod-*
+  username: elastic
+  password: T3pIzg@1234
   timeout: 60
-  host: ubuntu.wsl
-  port: 9200
-  scheme: http
-
-export_path: r:/
+  hosts: 192.168.0.51:9200,192.168.0.52:9200,192.168.0.53:9200
+  # 获取最大数量 (ES默认from + size <= 10000 ，超过1W的话如果不配置ES会报错
+  size: 10000
+export_path: ./
