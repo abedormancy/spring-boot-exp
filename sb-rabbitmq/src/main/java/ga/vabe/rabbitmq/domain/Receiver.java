@@ -9,7 +9,7 @@ public class Receiver {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    public void receiveMessage(String message) {
+    public void receiveMessage(String message) throws InterruptedException {
         System.out.println("Received <" + message + ">");
         latch.countDown();
     }
